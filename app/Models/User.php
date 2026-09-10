@@ -29,4 +29,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Daftar list yang dimiliki oleh user (owner).
+     */
+    public function ownedLists(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TaskList::class, 'user_id');
+    }
+
+    /**
+     * Daftar list tempat user berpartisipasi sebagai kolaborator.
+     */
+    public function collaboratingLists(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(TaskList::class, 'list_user', 'user_id', 'list_id')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
 }
