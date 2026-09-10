@@ -1,4 +1,4 @@
-# Aplikasi Manajemen Tugas
+# Aplikasi JARA - Sistem Manajemen Tugas
 
 Aplikasi web untuk mengelola tugas pribadi maupun tim. Pengguna dapat membuat, mengelompokkan, dan mengatur tugas ke dalam beberapa daftar (list/project), menetapkan prioritas dan tenggat waktu, serta menandai tugas sebagai selesai. Sistem juga memungkinkan kolaborasi antar pengguna dan pemantauan progres penyelesaian tugas.
 
@@ -25,20 +25,19 @@ Sebagai admin, saya ingin mengelola akun pengguna, sehingga saya dapat menambah,
 
 Berdasarkan fitur di atas, berikut adalah pembagian untuk 3 orang developer:
 
-### 👨‍💻 Developer 1 (Fokus: Backend, Struktur Data, & Admin)
-- Setup awal proyek, environment (Laravel), dan database.
+### Developer 1
 - Desain Schema Database (tabel `users`, `lists`, `tasks`, dan pivot tabel `list_user`).
 - **SRS-001**: Mengembangkan sistem otentikasi (Login/Register).
 - **SRS-001**: Membuat halaman dan logika CRUD manajemen pengguna untuk Admin.
 - Setup middleware Role & Permissions untuk keamanan akses sistem.
 
-### 👨‍💻 Developer 2 (Fokus: Core Logic, Lists, & Kolaborasi)
+### Developer 2
 - **SRS-002**: Mengembangkan logika CRUD untuk Daftar (Lists).
 - **SRS-005**: Mengembangkan logika backend untuk fitur Kolaborasi tim (menambahkan pengguna lain ke dalam list).
 - Membangun pengamanan API / fungsionalitas backend untuk memastikan hanya pemilik dan kolaborator yang bisa mengedit list.
 - **SRS-006**: Mengerjakan logika backend / agregasi persentase pemantauan progres tugas.
 
-### 👨‍💻 Developer 3 (Fokus: Tasks Management, Frontend UI/UX)
+### Developer 3
 - **SRS-003**: Mengembangkan fitur CRUD untuk Tugas (Tasks) dan input prioritas serta tenggat waktu.
 - **SRS-004**: Mengembangkan fungsionalitas pengubahan status tugas (checklist).
 - **SRS-006**: Mengintegrasikan antarmuka visualisasi pemantauan progres (progress bar).
