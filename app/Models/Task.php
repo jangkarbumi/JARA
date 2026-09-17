@@ -14,28 +14,20 @@ class Task extends Model
         'list_id',
         'title',
         'description',
-        'name',
-        'is_completed',
         'priority',
-        'deadline',
         'due_date',
+        'is_completed',
     ];
 
     protected function casts(): array
     {
         return [
             'is_completed' => 'boolean',
-            'deadline' => 'datetime',
-            'due_date' => 'datetime',
+            'due_date' => 'date',
         ];
     }
 
     public function list(): BelongsTo
-    {
-        return $this->belongsTo(TaskList::class, 'list_id');
-    }
-
-    public function todoList(): BelongsTo
     {
         return $this->belongsTo(TodoList::class, 'list_id');
     }
