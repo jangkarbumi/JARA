@@ -12,13 +12,10 @@ class Task extends Model
 
     protected $fillable = [
         'list_id',
-        'title',
-        'description',
         'name',
-        'is_completed',
         'priority',
         'deadline',
-        'due_date',
+        'is_completed',
     ];
 
     protected function casts(): array
