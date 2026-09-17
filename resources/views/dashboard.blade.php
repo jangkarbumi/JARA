@@ -27,9 +27,13 @@
                                     <li>
                                         <a href="{{ route('dashboard', ['list_id' => $list->id]) }}" 
                                            class="block px-4 py-3 rounded-md transition-colors {{ $activeList && $activeList->id === $list->id ? 'bg-indigo-600 text-white' : 'bg-gray-50 text-gray-700 hover:bg-gray-100' }}">
-                                            <div class="flex justify-between items-center">
+                                            <div class="flex justify-between items-center mb-2">
                                                 <span class="font-medium">{{ $list->name }}</span>
                                                 <span class="text-xs {{ $activeList && $activeList->id === $list->id ? 'bg-indigo-700 text-indigo-100' : 'bg-gray-200 text-gray-600' }} px-2 py-1 rounded-full">{{ $list->tasks->count() }} tasks</span>
+                                            </div>
+                                            <!-- Mini Progress Bar -->
+                                            <div class="w-full bg-gray-200 rounded-full h-1.5 {{ $activeList && $activeList->id === $list->id ? 'bg-indigo-400' : 'bg-gray-200' }}">
+                                                <div class="h-1.5 rounded-full {{ $activeList && $activeList->id === $list->id ? 'bg-white' : 'bg-indigo-500' }}" style="width: {{ $list->progress_percentage }}%"></div>
                                             </div>
                                         </a>
                                     </li>
@@ -43,7 +47,7 @@
                 <div class="w-full md:w-2/3">
                     @if($activeList)
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border border-gray-200 mb-6">
-                            <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+                            <div class="flex justify-between items-center mb-4">
                                 <h3 class="text-2xl font-bold text-gray-900">{{ $activeList->name }}</h3>
                                 <!-- Delete list button -->
                                 @if($activeList->user_id === auth()->id())
@@ -56,6 +60,17 @@
                                     </button>
                                 </form>
                                 @endif
+                            </div>
+
+                            <!-- Main Progress Bar -->
+                            <div class="mb-6 border-b border-gray-100 pb-6">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-sm font-medium text-gray-700">Project Progress</span>
+                                    <span class="text-sm font-semibold text-indigo-600">{{ $activeList->progress_percentage }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: {{ $activeList->progress_percentage }}%"></div>
+                                </div>
                             </div>
                             
                             <!-- Add Task Form -->
