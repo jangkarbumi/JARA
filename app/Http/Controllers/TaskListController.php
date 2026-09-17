@@ -40,7 +40,10 @@ class TaskListController extends Controller
         // owner otomatis jadi collaborator dengan role owner
         $list->collaborators()->attach(Auth::id(), ['role' => 'owner']);
 
-        return response()->json($list, 201);
+        if ($request->wantsJson()) {
+            return response()->json($list, 201);
+        }
+        return redirect()->route('dashboard', ['list_id' => $list->id])->with('success', 'List created successfully.');
     }
 
     // PUT /lists/{list} - SRS-002: ubah nama list
@@ -66,7 +69,10 @@ class TaskListController extends Controller
 
         $list->delete();
 
-        return response()->json(['message' => 'List berhasil dihapus.']);
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'List berhasil dihapus.']);
+        }
+        return redirect()->route('dashboard')->with('success', 'List deleted successfully.');
     }
 
     // POST /lists/{list}/collaborators - SRS-005: tambah kolaborator
