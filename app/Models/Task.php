@@ -12,9 +12,10 @@ class Task extends Model
 
     protected $fillable = [
         'list_id',
-        'name',
+        'title',
+        'description',
         'priority',
-        'deadline',
+        'due_date',
         'is_completed',
     ];
 
@@ -22,17 +23,11 @@ class Task extends Model
     {
         return [
             'is_completed' => 'boolean',
-            'deadline' => 'datetime',
-            'due_date' => 'datetime',
+            'due_date' => 'date',
         ];
     }
 
     public function list(): BelongsTo
-    {
-        return $this->belongsTo(TaskList::class, 'list_id');
-    }
-
-    public function todoList(): BelongsTo
     {
         return $this->belongsTo(TodoList::class, 'list_id');
     }

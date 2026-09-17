@@ -2,12 +2,13 @@
 
 namespace Tests\Feature;
 
-use App\Models\TaskList;
+use App\Models\TodoList;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Gate;
 use Tests\TestCase;
 
-class TaskListModelTest extends TestCase
+class TodoListTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -19,9 +20,10 @@ class TaskListModelTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $list = TaskList::create([
+        $list = TodoList::create([
             'name' => 'Sprint 1',
-            'user_id' => $user->id,
+            'description' => 'Tugas sprint 1',
+            'owner_id' => $user->id,
         ]);
 
         $this->assertEquals(1, $user->ownedLists()->count());
@@ -43,9 +45,10 @@ class TaskListModelTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $list = TaskList::create([
+        $list = TodoList::create([
             'name' => 'Proyek Bersama',
-            'user_id' => $owner->id,
+            'description' => 'Ini proyek bersama',
+            'owner_id' => $owner->id,
         ]);
 
         $list->collaborators()->attach($collaborator->id, ['role' => 'collaborator']);
@@ -55,7 +58,7 @@ class TaskListModelTest extends TestCase
         $this->assertEquals('collaborator', $list->collaborators->first()->pivot->role);
     }
 
-    public function test_is_accessible_by_checks_owner_and_collaborators(): void
+    public function test_policy_allows_owner_and_collaborator_but_not_stranger(): void
     {
         $owner = User::create([
             'name' => 'Owner',
@@ -75,15 +78,27 @@ class TaskListModelTest extends TestCase
             'password' => bcrypt('password123'),
         ]);
 
-        $list = TaskList::create([
+        $list = TodoList::create([
             'name' => 'Private List',
-            'user_id' => $owner->id,
+            'description' => 'List pribadi',
+            'owner_id' => $owner->id,
         ]);
 
         $list->collaborators()->attach($collaborator->id, ['role' => 'collaborator']);
 
-        $this->assertTrue($list->isAccessibleBy($owner));
-        $this->assertTrue($list->isAccessibleBy($collaborator));
-        $this->assertFalse($list->isAccessibleBy($stranger));
+        // Acting as owner
+        $this->actingAs($owner);
+        $this->assertTrue(Gate::allows('view', $list));
+        $this->assertTrue(Gate::allows('delete', $list));
+
+        // Acting as collaborator
+        $this->actingAs($collaborator);
+        $this->assertTrue(Gate::allows('view', $list));
+        $this->assertFalse(Gate::allows('delete', $list));
+
+        // Acting as stranger
+        $this->actingAs($stranger);
+        $this->assertFalse(Gate::allows('view', $list));
+        $this->assertFalse(Gate::allows('delete', $list));
     }
 }
