@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'role'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -28,5 +28,33 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function ownedTodoLists()
+    {
+        return $this->hasMany(TodoList::class, 'owner_id');
+    }
+
+    public function todoLists()
+    {
+        return $this->belongsToMany(TodoList::class, 'list_user', 'user_id', 'list_id');
+    }
+
+    /**
+     * Daftar list yang dimiliki oleh user (owner).
+     */
+    public function ownedLists(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TaskList::class, 'user_id');
+    }
+
+    /**
+     * Daftar list tempat user berpartisipasi sebagai kolaborator.
+     */
+    public function collaboratingLists(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(TaskList::class, 'list_user', 'user_id', 'list_id')
+            ->withPivot('role')
+            ->withTimestamps();
     }
 }
