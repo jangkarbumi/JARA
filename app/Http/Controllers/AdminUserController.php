@@ -35,7 +35,8 @@ class AdminUserController extends Controller
 
     public function show(string $id)
     {
-        // Not used
+        $user = \App\Models\User::findOrFail($id);
+        return view('admin.users.show', compact('user'));
     }
 
     public function edit(string $id)
