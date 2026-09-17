@@ -11,9 +11,8 @@ return new class extends Migration
         Schema::create('lists', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignId('user_id')
-                ->constrained('users')
-                ->onDelete('cascade'); // owner dari list
+            $table->text('description')->nullable();
+            $table->foreignId('owner_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
